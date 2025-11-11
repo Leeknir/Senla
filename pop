@@ -1,0 +1,29 @@
+FROM apache/tika:latest-full
+
+# Установка языкового пакета для русского в Tesseract
+RUN apt-get update && \
+    apt-get install -y tesseract-ocr-rus && \
+    apt-get clean && \
+    rm -rf /var/lib/apt/lists/*
+
+# Создаём конфиг-файл для Tika с дефолтным языком OCR (rus + eng для универсальности)
+RUN echo '<?xml version="1.0" encoding="UTF-8"?>\n\
+<properties>\n\
+  <parsers>\n\
+    <parser class="org.apache.tika.parser.pkg.PackageParser"/>\n\
+    <parser class="org.apache.tika.parser.DefaultParser">\n\
+      <mime-exclude>application/pdf</mime-exclude>\n\
+    </parser>\n\
+    <parser class="org.apache.tika.parser.pdf.PDFParser">\n\
+      <params>\n\
+        <param name="ocrStrategy" type="string">ocr_and_text_extraction</param>\n\
+        <param name="ocrDPI" type="int">300</param>\n\
+      </params>\n\
+    </parser>\n\
+    <parser class="org.apache.tika.parser.ocr.TesseractOCRParser">\n\
+      <params>\n\
+        <param name="language" type="string">rus+eng</param>\n\
+      </params>\n\
+    </parser>\n\
+  </parsers>\n\
+</properties>' > /tika-config.xml
