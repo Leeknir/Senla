@@ -30,3 +30,9 @@ RUN echo '<?xml version="1.0" encoding="UTF-8"?>\n\
 
 
 
+curl http://host.docker.internal:11434/api/embeddings -H "Content-Type: application/json" -d '{
+  "model": "nomic-embed-text",
+  "prompt": "Test embedding"
+}'
+
+
