@@ -1,4 +1,4 @@
-FROM apache/tika:latest-full
+Jo FROM apache/tika:latest-full
 
 # Установка языкового пакета для русского в Tesseract
 RUN apt-get update && \
@@ -27,3 +27,6 @@ RUN echo '<?xml version="1.0" encoding="UTF-8"?>\n\
     </parser>\n\
   </parsers>\n\
 </properties>' > /tika-config.xml
+
+
+
